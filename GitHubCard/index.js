@@ -1,15 +1,3 @@
-/* Step 1: using axios, send a GET request to the following URL 
-           (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
-*/
-
-/* Step 2: Inspect and study the data coming back, this is YOUR 
-   github info! You will need to understand the structure of this 
-   data in order to use it to build your component function 
-
-   Skip to Step 3.
-*/
-
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
 */
@@ -54,10 +42,28 @@ const followersArray = [];
   bigknell
 */
 
-//Step 1:
-axios.get('https://api.github.com/users/alwaysTracieT').then(data => {
-  //results from server
-  console.log('response', data);
-})
+//Step 1 & 2:
+// const promise = axios.get('https://api.github.com/users/alwaysTracieT')
+
+// promise
+//   .then(data => {
+//     //results from server
+//     console.log('response', data)
+//   })
+//   .catch(error => {
+//     console.log("Site no worky, sorry boutcha", error)
+//   })
+// axios.get('https://api.github.com/users/alwaysTracieT').then(data => {
+//   console.log('response', data)
+// })
+
 
 //Step 3: 
+function createCard(image, description) {
+  //create the elements
+  const card = document.createElement('div')
+  const img = document.createElement('img')
+  const name = document.createElement('name')
+  const paragraph = document.createElement('paragraph')
+  const userName = document.createElement('userName')
+}

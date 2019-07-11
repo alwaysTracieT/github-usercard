@@ -1,18 +1,25 @@
-/* Step 4: Pass the data received from Github into your function, 
-           create a new component and add it to the DOM as a child of .cards
-*/
-
-/* Step 5: Now that you have your own card getting added to the DOM, either 
-          follow this link in your browser https://api.github.com/users/<Your github name>/followers 
-          , manually find some other users' github handles, or use the list found 
-          at the bottom of the page. Get at least 5 different Github usernames and add them as
-          Individual strings to the friendsArray below.
-          
-          Using that array, iterate over it, requesting data for each user, creating a new card for each
-          user, and adding that card to the DOM.
-*/
-
+//Steps 4 & 5
 const followersArray = [];
+axios.get('https://api.github.com/users/alwaysTracieT/followers')
+.then(data => {
+  console.log('Returned the following results: ', data);
+  data.data.forEach(element => {followersArray.push(element.login)});
+  console.log('Current followers: ', followersArray)
+})
+.catch (error => {
+  console.log('The following error has occured with followersArray: ', error)
+})
+
+followersArray.forEach(follower => {
+  axios.get(`https://api.github.com/users/${follower}`)
+  .then(data => {
+    createCard(data);
+    console.log('Card created for: ', follower);
+  })
+  .catch(error => {
+    console.log('Check your follower-card-creator: ', error);
+  })
+})
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,17 +60,41 @@ const followersArray = [];
 //   .catch(error => {
 //     console.log("Site no worky, sorry boutcha", error)
 //   })
-// axios.get('https://api.github.com/users/alwaysTracieT').then(data => {
-//   console.log('response', data)
-// })
+
 
 
 //Step 3: 
-function createCard(image, description) {
+
+const thatKide = createCard();
+
+function createCard(data) {
   //create the elements
-  const card = document.createElement('div')
-  const img = document.createElement('img')
-  const name = document.createElement('name')
-  const paragraph = document.createElement('paragraph')
-  const userName = document.createElement('userName')
+  const card = document.createElement('card')
+  const userImg = document.createElement('img')
+  const cardInfo = document.createElement('card-info')
+  const fullName = document.createElement('name')
+  const userName = document.createElement('username')
+
+  //set the styles
+  card.classList.add('card')
+  userImg.classList.add('img')
+  cardInfo.classList.add('card-info')
+  fullName.classList.add('name')
+  userName.classList.add('username')
+
+  //put in content
+  fullName.textContent = data.data.name;
+  userName.textContent = data.data.login;
+  userLocation.textContent = `Location ${data.data.location}`;
+  userProfile.textContent = `Profile ${data[profileLink]}`;
+  userFollowers.textContent = `Followers ${data[followers_url]}`;
+  userFollowing.textContent = `Following ${data[following_url]}`;
+  userBio.textContent = `User Bio: ${data[bio]}`;
+
+  profileLink.href = data[html_url];
+  userImage.src = data[avatar_url];
+  userImage.alt = "Image of the User"
+
+  return card;
+
 }

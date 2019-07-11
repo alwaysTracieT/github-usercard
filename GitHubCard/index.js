@@ -53,3 +53,11 @@ const followersArray = [];
   luishrd
   bigknell
 */
+
+//Step 1:
+axios.get('https://api.github.com/users/alwaysTracieT').then(data => {
+  //results from server
+  console.log('response', data);
+})
+
+//Step 3: 

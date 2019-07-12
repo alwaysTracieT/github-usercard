@@ -1,30 +1,4 @@
-/* Step 1: using axios, send a GET request to the following URL 
-           (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
-*/
 
-/* Step 2: Inspect and study the data coming back, this is YOUR 
-   github info! You will need to understand the structure of this 
-   data in order to use it to build your component function 
-
-   Skip to Step 3.
-*/
-
-/* Step 4: Pass the data received from Github into your function, 
-           create a new component and add it to the DOM as a child of .cards
-*/
-
-/* Step 5: Now that you have your own card getting added to the DOM, either 
-          follow this link in your browser https://api.github.com/users/<Your github name>/followers 
-          , manually find some other users' github handles, or use the list found 
-          at the bottom of the page. Get at least 5 different Github usernames and add them as
-          Individual strings to the friendsArray below.
-          
-          Using that array, iterate over it, requesting data for each user, creating a new card for each
-          user, and adding that card to the DOM.
-*/
-
-const followersArray = [];
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -53,3 +27,93 @@ const followersArray = [];
   luishrd
   bigknell
 */
+constcards = document.querySelector('.cards');
+//Step 1 & 2:
+axios.get('https://api.github.com/users/alwaysTracieT')
+// promise
+  .then(data => {
+    //results from server
+    console.log('response', data.data);
+    const card = createCard(data.data);
+    cards.append(card);
+  })
+  .catch(error => {
+    console.log("Request no worky, sorry boutcha", error)
+  })
+
+//Steps 4 & 5
+const followersArray = [];
+
+const followers = [
+  "brudnak", 
+  "llamousse", 
+  "areumjo", 
+  "thisbenrogers", 
+  "antilou86", 
+  "DeejayEaster"
+];
+
+followers.forEach(follower => {
+  axios.get(`https://api.github.com/users/${follower}`)
+  .then(data => {
+    const card = createCard(data.data);
+    cards.append(card);
+  })
+  .catch(error => {
+    console.log('Check your follower-card-creator: ', error);
+  })
+})
+
+axios.get('https://api.github.com/users/alwaysTracieT/followers')
+.then(data => {
+  console.log('Returned the following results: ', data.data);
+  data.data.forEach(element => {followersArray.push(element.login)});
+  console.log('Current followers: ', followersArray)
+})
+.catch (error => {
+  console.log('The following error has occured with followersArray: ', error)
+})
+
+//Step 3: 
+const cards = document.querySelector('.cards');
+
+function createCard(user) {
+  //create the elements
+  const card = document.createElement('div'),
+    userImg = document.createElement('img'),
+    cardInfo = document.createElement('div'),
+    fullName = document.createElement('h3'),
+    userName = document.createElement('p'),
+    location = document.createElement('p'),
+    profile = document.createElement('p'),
+    link = document.createElement('a'),
+    followers = document.createElement('p'),
+    following = document.createElement('p'),
+    bio = document.createElement('p')
+
+  //set the styles
+  card.classList.add('card');
+  userImg.classList.add('img');
+  cardInfo.classList.add('card-info');
+  fullName.classList.add('fullName');
+  userName.classList.add('username');
+  
+  //put in content
+  userImg.src = user.avatar_url;
+  fullName.textContent = user.name;
+  userName.textContent = user.login;
+  location. textContent = `Location: ${user.location || `Your mom's house.`}`;
+  profile.textContent = 'Profile: ';
+  link.href = user.html_url;
+  link.textContent = user.html_url;
+  followers.textContent = `Followers: ${user.followers}`;
+  following.textContent = `Following: ${user.following}`;
+  bio.textContent = `Bio: ${user.bio || 'None *sadface*'}`;
+  //appends
+  card.append(userImg);
+  card.append(cardInfo);
+  cardInfo.append(userName, location, profile, followers, following, bio);
+  profile.append(link);
+
+  return card;
+}

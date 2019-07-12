@@ -43,26 +43,38 @@ axios.get('https://api.github.com/users/alwaysTracieT')
 
 //Steps 4 & 5
 const followersArray = [];
-axios.get('https://api.github.com/users/alwaysTracieT/followers')
-.then(data => {
-  console.log('Returned the following results: ', data);
-  data.data.forEach(element => {followersArray.push(element.login)});
-  console.log('Current followers: ', followersArray)
-})
-.catch (error => {
-  console.log('The following error has occured with followersArray: ', error)
-})
 
-followersArray.forEach(follower => {
+const followers = [
+  "brudnak", 
+  "llamousse", 
+  "areumjo", 
+  "thisbenrogers", 
+  "antilou86", 
+  "DeejayEaster"
+];
+
+followers.forEach(follower => {
   axios.get(`https://api.github.com/users/${follower}`)
   .then(data => {
-    createCard(data);
-    console.log('Card created for: ', follower);
+    const card = createCard(data.data);
+    cards.append(card);
   })
   .catch(error => {
     console.log('Check your follower-card-creator: ', error);
   })
 })
+
+// axios.get('https://api.github.com/users/alwaysTracieT/followers')
+// .then(data => {
+//   console.log('Returned the following results: ', data);
+//   data.data.forEach(element => {followersArray.push(element.login)});
+//   console.log('Current followers: ', followersArray)
+// })
+// .catch (error => {
+//   console.log('The following error has occured with followersArray: ', error)
+// })
+
+
 
 
 //Step 3: 
@@ -99,7 +111,7 @@ function createCard(user) {
   link.textContent = user.html_url;
   followers.textContent = `Followers: ${user.followers}`;
   following.textContent = `Following: ${user.following}`;
-  bio.textContent = `Bio: ${user.bio}`;
+  bio.textContent = `Bio: ${user.bio || 'None *sadface*'}`;
   //appends
   card.append(userImg);
   card.append(cardInfo);

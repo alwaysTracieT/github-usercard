@@ -64,18 +64,15 @@ followers.forEach(follower => {
   })
 })
 
-// axios.get('https://api.github.com/users/alwaysTracieT/followers')
-// .then(data => {
-//   console.log('Returned the following results: ', data);
-//   data.data.forEach(element => {followersArray.push(element.login)});
-//   console.log('Current followers: ', followersArray)
-// })
-// .catch (error => {
-//   console.log('The following error has occured with followersArray: ', error)
-// })
-
-
-
+axios.get('https://api.github.com/users/alwaysTracieT/followers')
+.then(data => {
+  console.log('Returned the following results: ', data.data);
+  data.data.forEach(element => {followersArray.push(element.login)});
+  console.log('Current followers: ', followersArray)
+})
+.catch (error => {
+  console.log('The following error has occured with followersArray: ', error)
+})
 
 //Step 3: 
 const cards = document.querySelector('.cards');
@@ -105,7 +102,7 @@ function createCard(user) {
   userImg.src = user.avatar_url;
   fullName.textContent = user.name;
   userName.textContent = user.login;
-  location. textContent = `Location: ${user.location}`;
+  location. textContent = `Location: ${user.location || `Your mom's house.`}`;
   profile.textContent = 'Profile: ';
   link.href = user.html_url;
   link.textContent = user.html_url;
